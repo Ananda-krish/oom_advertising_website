@@ -1,124 +1,94 @@
-import React from 'react';
-import Particles from 'react-particles-js';
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { useEffect, useMemo, useState } from "react";
+import { loadSlim } from "@tsparticles/slim"; // Load slim package
 
-const ParticlesBackground = () => {
-  return (
-    <Particles
-      params={{
-        particles: {
-          number: {
-            value: 160,
-            density: {
-              enable: true,
-              value_area: 800
-            }
-          },
-          color: {
-            value: '#ffffff'
-          },
-          shape: {
-            type: 'circle',
-            stroke: {
-              width: 0,
-              color: '#000000'
-            },
-            polygon: {
-              nb_sides: 5
-            }
-          },
-          opacity: {
-            value: 1,
-            random: true,
-            anim: {
-              enable: true,
-              speed: 1,
-              opacity_min: 0,
-              sync: false
-            }
-          },
-          size: {
-            value: 3,
-            random: true,
-            anim: {
-              enable: false,
-              speed: 4,
-              size_min: 0.3,
-              sync: false
-            }
-          },
-          line_linked: {
-            enable: false,
-            distance: 150,
-            color: '#ffffff',
-            opacity: 0.4,
-            width: 1
-          },
-          move: {
+const ParticlesComponent = (props) => {
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
+  }, []);
+
+  const particlesLoaded = (container) => {
+    console.log(container);
+  };
+
+  const options = useMemo(
+    () => ({
+      background: {
+        color: {
+          value: "#00FFFF", // Background color
+        },
+      },
+      fpsLimit: 120,
+      interactivity: {
+        events: {
+          onClick: {
             enable: true,
-            speed: 1,
-            direction: 'none',
-            random: true,
-            straight: false,
-            out_mode: 'out',
-            bounce: false,
-            attract: {
-              enable: false,
-              rotateX: 600,
-              rotateY: 600
-            }
-          }
-        },
-        interactivity: {
-          detect_on: 'canvas',
-          events: {
-            onhover: {
-              enable: true,
-              mode: 'bubble'
-            },
-            onclick: {
-              enable: true,
-              mode: 'push'
-            },
-            resize: true
+            mode: "repulse",
           },
-          modes: {
-            grab: {
-              distance: 400,
-              line_linked: {
-                opacity: 1
-              }
-            },
-            bubble: {
-              distance: 250,
-              size: 0,
-              duration: 2,
-              opacity: 0,
-              speed: 3
-            },
-            repulse: {
-              distance: 400,
-              duration: 0.4
-            },
-            push: {
-              particles_nb: 4
-            },
-            remove: {
-              particles_nb: 2
-            }
-          }
+          onHover: {
+            enable: true,
+            mode: "grab",
+          },
         },
-        retina_detect: true
-      }}
-      style={{
-        position: 'absolute',
-        zIndex: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        top: 0
-      }}
-    />
+        modes: {
+          push: {
+            distance: 100,
+            duration: 20,
+          },
+          grab: {
+            distance: 150,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: "#00BFFF", // Change particle color to match background
+        },
+        links: {
+          color: "#00BFFF", // Change link color
+          distance: 100,
+          enable: false,
+          opacity: 0.5,
+          width: 1,
+        },
+        move: {
+          direction: "none",
+          enable: true,
+          outModes: {
+            default: "bounce",
+          },
+          random: true,
+          speed: 1,
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+          },
+          value: 600, // Increased number of particles
+        },
+        opacity: {
+          value: 0.7, // Adjusted opacity
+        },
+        shape: {
+          type: "circle", // Changed shape to circle
+        },
+        size: {
+          value: { min: 1, max: 5 }, // Reduced size of particles
+        },
+      },
+      detectRetina: true,
+    }),
+    [],
   );
+
+  return <Particles id={props.id} init={particlesLoaded} options={options} />;
 };
 
-export default ParticlesBackground;
+export default ParticlesComponent;
