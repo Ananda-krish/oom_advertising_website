@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="bg-black text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Company Info */}
           <div>
             <h3 className="text-2xl font-bold mb-4">OM ADVERTISEMENTS</h3>
@@ -73,27 +73,6 @@ const Footer = () => {
                 <span>123 Ad Street, Marketing City, MC 12345</span>
               </li>
             </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
-            <p className="text-gray-400 mb-4">
-              Subscribe to our newsletter for the latest updates and offers.
-            </p>
-            <form className="space-y-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-white"
-              />
-              <button
-                type="submit"
-                className="w-full px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
           </div>
         </div>
 
