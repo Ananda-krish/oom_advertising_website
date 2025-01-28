@@ -1,25 +1,48 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Products = () => {
+  const titleRef = useRef(null);
+  const productsRef = useRef([]);
+
   useEffect(() => {
-    const parallaxElements = document.querySelectorAll('.parallax-bg');
-    
-    parallaxElements.forEach(element => {
-      gsap.to(element, {
-        backgroundPosition: `50% ${-50}%`,
-        ease: "none",
-        scrollTrigger: {
-          trigger: element,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      });
+    // Initial setup - hide products
+    gsap.set(productsRef.current, { 
+      opacity: 0,
+      y: 100
+    });
+
+    // Title zoom animation
+    gsap.fromTo(titleRef.current,
+      {
+        opacity: 0,
+        scale: 0.1,
+        z: -1000,
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        z: 0,
+        duration: 1.5,
+        ease: "power3.out",
+      }
+    );
+
+    // Products stagger animation
+    gsap.to(productsRef.current, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.2,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: productsRef.current[0],
+        start: "top 80%",
+        toggleActions: "play none none none"
+      }
     });
   }, []);
 
@@ -55,64 +78,55 @@ const Products = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative h-[60vh] overflow-hidden parallax-bg"
-           style={{
-             backgroundImage: 'url(https://images.unsplash.com/photo-1616832880334-b1004d9808da?auto=format&fit=crop&q=80)',
-             backgroundSize: 'cover',
-             backgroundPosition: 'center'
-           }}>
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="relative h-full flex items-center justify-center">
-          <motion.h1 
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-6xl font-bold text-white text-center"
-          >
-            Our Products
-          </motion.h1>
-        </div>
+    <div className="min-h-screen bg-black">
+      {/* Hero Section with Zoom Effect */}
+      <div className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 to-black/90" />
+        <h1 
+          ref={titleRef}
+          className="relative text-8xl font-bold text-white text-center transform-gpu"
+          style={{ perspective: "1000px" }}
+        >
+          Our Products
+        </h1>
       </div>
 
       {/* Products Grid */}
-      <div className="max-w-7xl mx-auto px-4 py-20">
-        <div className="space-y-12">
+      <div className="max-w-7xl mx-auto px-4 pb-32">
+        <div className="space-y-32">
           {products.map((product, index) => (
-            <motion.div
+            <div
               key={product.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-              className={`group flex flex-col md:flex-row items-center bg-white shadow-lg rounded-lg overflow-hidden ${
-                index === 1 || index === 3 ? 'md:flex-row-reverse' : '' // Apply the reverse layout for the 2nd and 4th cards
+              ref={el => productsRef.current[index] = el}
+              className={`group flex flex-col md:flex-row items-center gap-12 ${
+                index % 2 === 1 ? 'md:flex-row-reverse' : ''
               }`}
             >
-              <div className="md:w-[55%] h-80 overflow-hidden">
+              <div className="md:w-[55%] h-[500px] overflow-hidden rounded-2xl">
                 <img 
                   src={product.image} 
                   alt={product.title}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
                 />
               </div>
-              <div className="md:w-[45%] p-8">
-                <h3 className="text-3xl font-semibold text-gray-800 mb-4 group-hover:text-purple-600 transition-colors duration-300">
+              <div className="md:w-[45%] text-white">
+                <h3 className="text-4xl font-bold mb-6 group-hover:text-blue-400 transition-colors duration-300">
                   {product.title}
                 </h3>
-                <p className="text-lg text-gray-600 mb-4">{product.description}</p>
-                <div className="space-y-2 text-sm text-gray-500">
+                <p className="text-xl text-gray-300 mb-8">{product.description}</p>
+                <div className="space-y-4">
                   {product.features.map((feature, i) => (
-                    <p key={i}>
-                      <span className="font-semibold text-gray-700">•</span> {feature}
+                    <p key={i} className="flex items-center text-gray-400">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                      {feature}
                     </p>
                   ))}
                 </div>
-                <div className="mt-6 inline-block bg-gradient-to-r from-blue-500 to-teal-600 text-white px-6 py-3 rounded-full text-sm font-semibold shadow-lg group-hover:shadow-blue-500/50">
-                  Available Now
-                </div>
+                <button className="mt-8 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300">
+                  Learn More
+                </button>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
