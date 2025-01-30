@@ -73,7 +73,7 @@ const UpcomingSites = () => {
         style={{
           backgroundImage:
             'url(https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&q=80)',
-          backgroundSize: '42%', // Zoom out the image
+          backgroundSize: '62%', // Zoom out the image
           backgroundPosition: 'center',
         }}
       >
