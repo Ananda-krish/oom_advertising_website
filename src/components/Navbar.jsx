@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/90 backdrop-blur-sm text-black' : 'bg-transparent text-white'
+      scrolled ? 'bg-black/50 backdrop-blur-sm text-black' : 'bg-transparent text-black'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -41,9 +41,10 @@ const Navbar = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-3 py-2 text-sm font-medium hover:text-gray-300 transition-colors ${
+                  className={`px-3 py-2 text-sm font-medium text-gray-800 hover:text-gray-500 hover:underline transition-colors ${
                     location.pathname === link.path ? 'border-b-2 border-white' : ''
                   }`}
+                  
                 >
                   {link.name}
                 </Link>

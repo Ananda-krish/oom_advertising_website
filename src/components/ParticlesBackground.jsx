@@ -21,7 +21,7 @@ const ParticlesComponent = (props) => {
     () => ({
       background: {
         color: {
-          value: "#00FFFF", // Background color
+          value: "#FFFFFF", // Background color
         },
       },
       fpsLimit: 120,
@@ -48,10 +48,10 @@ const ParticlesComponent = (props) => {
       },
       particles: {
         color: {
-          value: "#00BFFF", // Change particle color to match background
+          value: "#000080", 
         },
         links: {
-          color: "#00BFFF", // Change link color
+          color: "#00BFFF", 
           distance: 100,
           enable: false,
           opacity: 0.5,
@@ -80,7 +80,7 @@ const ParticlesComponent = (props) => {
           type: "circle", // Changed shape to circle
         },
         size: {
-          value: { min: 1, max: 5 }, // Reduced size of particles
+          value: { min: 1, max: 2 }, // Reduced size of particles
         },
       },
       detectRetina: true,

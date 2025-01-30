@@ -8,6 +8,7 @@ import UpcomingSites from './pages/UpcomingSites';
 import Contact from './pages/Contact';
 import MouseFollower from './components/MouseFollower';
 import Footer from './components/Footer';
+import WorkGallery from './components/WorkGallery';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/upcoming-sites" element={<UpcomingSites />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/work" element={<WorkGallery />} />
         </Routes>
         <Footer />
       </div>
