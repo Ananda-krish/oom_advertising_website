@@ -120,7 +120,7 @@ const HeroSection = () => {
       </div>
 
       <div className="absolute inset-0 z-10 flex flex-col lg:flex-row justify-center items-center px-4 sm:px-8 lg:px-16">
-        <div className="hidden lg:block w-[15%] h-[60vh] relative overflow-hidden transform 
+        <div className="hidden lg:block w-[15%] h-[55vh] relative overflow-hidden transform 
             perspective-1000 rotate-y-10 hover:rotate-y-0 transition-all duration-500 
             rounded-xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]">
           <Slider ref={leftSliderRef} {...baseSettings}>
@@ -136,29 +136,29 @@ const HeroSection = () => {
           </Slider>
         </div>
 
-        <div className="w-full lg:w-[50%] h-[50vh] sm:h-[60vh] lg:h-[80vh] mx-0 lg:mx-8 relative overflow-visible transform 
+        <div className="w-full lg:w-[60%] h-[50vh] sm:h-[60vh] lg:h-[70vh] mx-0 lg:mx-10 relative overflow-visible transform 
             perspective-1000 rotate-y-0 transition-all duration-500 
             rounded-xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]">
-          <Slider ref={centerSliderRef} {...mainSettings}>
-            {slides.map((slide, index) => (
-              <div key={index} className="h-[50vh] sm:h-[60vh] lg:h-[80vh] relative">
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-cover rounded-xl"
-                  loading="eager"
-                  style={{ imageRendering: 'crisp-edges' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent rounded-xl">
-                  <div className="absolute top-1/3 left-0 right-0 text-center text-white p-4">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4 drop-shadow-lg">{slide.title}</h2>
-                    <p className="text-sm sm:text-lg lg:text-xl drop-shadow-lg">{slide.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </Slider>
+  <Slider ref={centerSliderRef} {...mainSettings}>
+    {slides.map((slide, index) => (
+      <div key={index} className="h-[50vh] sm:h-[60vh] lg:h-[70vh] relative"> {/* Reduce lg:h value */}
+        <img
+          src={slide.image}
+          alt={slide.title}
+          className="w-full h-full object-cover rounded-xl"
+          loading="eager"
+          style={{ imageRendering: 'crisp-edges' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent rounded-xl">
+          <div className="absolute top-1/3 left-0 right-0 text-center text-white p-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4 drop-shadow-lg">{slide.title}</h2>
+            <p className="text-sm sm:text-lg lg:text-xl drop-shadow-lg">{slide.description}</p>
+          </div>
         </div>
+      </div>
+    ))}
+  </Slider>
+</div>
 
         <div className="hidden lg:block w-[15%] h-[60vh] relative overflow-hidden transform 
             perspective-1000 rotate-y-10 hover:rotate-y-0 transition-all duration-500 

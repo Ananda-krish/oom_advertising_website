@@ -41,7 +41,9 @@ const Single = ({ item, index }) => {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 2, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.3, 0.7, 0.8, 1], [0, 1, 1, 1, 0, 0]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.3, 0.5, 0.7, 1], [0, 0, 1, 1, 0]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.3, 0.5, 0.6, 0.5], [0, 0, 0.5, 0.5, 0]);
+  
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.3, 0.4, 0.7, 0.8, 1], [0, 0, 1, 1, 0, 0]);
 
   return (
@@ -62,10 +64,11 @@ const Single = ({ item, index }) => {
         <div className="flex flex-col items-center gap-8 sm:gap-12">
           {/* Image Container */}
           <motion.div 
-            className="w-full max-w-lg sm:max-w-3xl md:max-w-5xl lg:max-w-7xl aspect-video relative"
+            className="w-full max-w-lg sm:max-w-3xl md:max-w-4xl lg:max-w-5xl  aspect-video relative"
             style={{ 
               scale: imageScale,
-              opacity
+              opacity,
+              y: imageY
             }}
           >
             <img

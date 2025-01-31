@@ -1,17 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Parallax = ({ type }) => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const [currentImageIndices, setCurrentImageIndices] = useState([]);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-  const textScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.5]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const [currentImageIndices, setCurrentImageIndices] = useState([]);
 
   const images = [
     '/hording1.jpg',
@@ -49,6 +41,22 @@ const Parallax = ({ type }) => {
     { width: '100%', height: '33.33%', x: '0%', y: '66.66%' }
   ];
 
+  // Initialize image indices
+  useEffect(() => {
+    setCurrentImageIndices(cardLayouts.map((_, index) => index % images.length));
+  }, [cardLayouts.length, images.length]);
+
+  // Handle auto-sliding
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndices(prevIndices => 
+        prevIndices.map(index => (index + 1) % images.length)
+      );
+    }, 3000); // Change slides every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -58,27 +66,12 @@ const Parallax = ({ type }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    const updateImageIndices = () => {
-      const scrollProgress = scrollYProgress.get();
-      const shift = Math.floor(scrollProgress * images.length);
-      const newIndices = cardLayouts.map((_, index) => 
-        (index + shift) % images.length
-      );
-      setCurrentImageIndices(newIndices);
-    };
-
-    const unsubscribe = scrollYProgress.on('change', updateImageIndices);
-    updateImageIndices(); // Initial update
-
-    return () => unsubscribe();
-  }, [scrollYProgress, images.length, cardLayouts.length]);
-
   // Determine title based on type
   const title = type === 'services' ? 'What We Do' : type === 'portfolio' ? 'What We Did' : '';
-  const titleColor = type === 'services' ? '#FF4500' : type === 'portfolio' ? '#0000FF' : '#000000'; // Change colors as needed
+  const titleColor = type === 'services' ? '#FF4500' : type === 'portfolio' ? '#0000FF' : '#000000';
+
   return (
-    <div ref={containerRef} className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden">
       <div className="absolute inset-0 w-full h-full">
         {cardLayouts.map((layout, index) => (
           <motion.div
@@ -93,32 +86,28 @@ const Parallax = ({ type }) => {
           >
             <motion.div
               className="w-full h-full relative"
-              initial={false}
-              
-              animate={{
-                opacity: [0, 1],
-              }}
-              transition={{
-                duration: 0.5,
-              }}
+              initial={{ opacity: 0.8 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
             >
-              <img
+              <motion.img
+                key={currentImageIndices[index]}
                 src={images[currentImageIndices[index] || 0]}
                 alt={`Gallery image ${index + 1}`}
                 className="w-full h-full object-cover"
+                initial={{ opacity: 0.8 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
               />
             </motion.div>
           </motion.div>
         ))}
       </div>
-      <motion.div 
-        className="absolute inset-0 flex items-center justify-center z-50"
-        style={{ scale: textScale, opacity: textOpacity }}
-      >
-        <h1 className="text-6xl font-bold drop-shadow-2xl" style={{  color: titleColor }}>
+      <div className="absolute inset-0 flex items-center justify-center z-50">
+        <h1 className="text-6xl font-bold drop-shadow-2xl" style={{ color: titleColor }}>
           {title}
         </h1>
-      </motion.div>
+      </div>
     </div>
   );
 };
